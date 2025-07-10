@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: manga-recommend-api
+    runtime: docker
+    plan: free
+    envVars:
+      - key: GEMINI_API_KEY
+        value: AIzaSyCWZDP9XIDtmCSe8FKQvSGdC0NfNp6SodU
+      - key: CORS_ALLOWED_ORIGINS
+        value: https://bright-kelpie-17d698.netlify.app
