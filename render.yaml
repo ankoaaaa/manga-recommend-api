@@ -3,6 +3,8 @@ services:
     name: manga-recommend-api
     runtime: docker
     plan: free
+    # Dockerfileの場所を明示的に指定
+    dockerfilePath: ./Dockerfile
     envVars:
       - key: GEMINI_API_KEY
         value: AIzaSyCWZDP9XIDtmCSe8FKQvSGdC0NfNp6SodU
