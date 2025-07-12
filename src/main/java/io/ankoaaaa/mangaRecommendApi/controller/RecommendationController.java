@@ -14,12 +14,12 @@ import io.ankoaaaa.mangaRecommendApi.service.GeminiApiService;
 @RequestMapping("/api/v1/recommendations")
 public class RecommendationController {
 
-    @Autowired
-    private GeminiApiService geminiApiService;
+	@Autowired
+	private GeminiApiService geminiApiService;
 
-    @PostMapping
-    public RecommendationResponse  getRecommendations(@RequestBody RecommendationRequest request) { // 戻り値を一旦Stringに
-        System.out.println("受け取ったタイトル: " + request.getTitles());
-        return geminiApiService.getRecommendation(request.getTitles());
-    }
+	@PostMapping
+	public RecommendationResponse getRecommendations(@RequestBody RecommendationRequest request) { // 戻り値を一旦Stringに
+		System.out.println("受け取ったタイトル: " + request.getTitles());
+		return geminiApiService.getRecommendation(request.getTitles());
+	}
 }
