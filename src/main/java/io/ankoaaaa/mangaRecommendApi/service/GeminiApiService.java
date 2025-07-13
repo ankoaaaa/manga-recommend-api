@@ -17,6 +17,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.ankoaaaa.mangaRecommendApi.constants.PromptConstants;
+import io.ankoaaaa.mangaRecommendApi.dto.RecommendationRequest;
 import io.ankoaaaa.mangaRecommendApi.dto.RecommendationResponse;
 
 @Service
@@ -33,17 +35,29 @@ public class GeminiApiService {
 	private static final long INITIAL_BACKOFF_MS = 1000; // 初回の待ち時間（1秒）
 
 	@Cacheable("recommendations")
-	public RecommendationResponse getRecommendation(List<String> titles) {
+	public RecommendationResponse getRecommendation(RecommendationRequest request) {
 		String url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key="
 				+ apiKey;
 
+		List<String> titles = request.getTitles();
+		String reason = request.getReason();
+
+		// ▼ プロンプトを組み立てる ▼
+		// ▼ 定数クラスからプロンプトを組み立てる ▼
+		String formattedTitles = String.join("、", titles);
+		String finalPromptBase;
+
+		if (reason != null && !reason.isEmpty()) {
+			finalPromptBase = PromptConstants.BASE.replace("{titles}", formattedTitles).replace("{reason}", reason);
+		} else {
+			finalPromptBase = PromptConstants.BASE.replace("{titles}", formattedTitles)
+					.replace("特に「{reason}」という点に魅力を感じています。", "");
+		}
+
+		String prompt = finalPromptBase + "\n" + PromptConstants.INSTRUCTION + "\n" + PromptConstants.FORMAT;
+
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
-
-		String prompt = String.join("、", titles)
-				+ "のような漫画が好きです。この人が好きそうな漫画を2つ、それぞれ50字程度の紹介文をつけて、以下のフォーマットのJSON形式で返してください。\n"
-				+ "フォーマット: {\"recommendations\": [{\"title\": \"漫画のタイトル\", \"description\": \"紹介文\"}]}";
-
 		Map<String, Object> requestBody = Map.of(
 				"contents", List.of(
 						Map.of("parts", List.of(

@@ -20,6 +20,7 @@ public class RecommendationController {
 	@PostMapping
 	public RecommendationResponse getRecommendations(@RequestBody RecommendationRequest request) { // 戻り値を一旦Stringに
 		System.out.println("受け取ったタイトル: " + request.getTitles());
-		return geminiApiService.getRecommendation(request.getTitles());
+		System.out.println("好きな理由: " + request.getReason());
+		return geminiApiService.getRecommendation(request);
 	}
 }

@@ -6,5 +6,6 @@ import lombok.Data;
 
 @Data
 public class RecommendationRequest {
-    private List<String> titles;
+	private List<String> titles;
+	private String reason;
 }

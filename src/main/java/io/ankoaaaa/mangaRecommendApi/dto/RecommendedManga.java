@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RecommendedManga {
-    private String title;
-    private String description;
+	private String title;
+	private String description;
+	private String interpretation;
 }
