@@ -10,5 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RecommendationResponse {
-    private List<RecommendedManga> recommendations;
+	private String introduction;
+	private List<RecommendationCategory> categories;
 }
